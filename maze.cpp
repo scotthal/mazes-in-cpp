@@ -3,9 +3,9 @@
 #include "cell.h"
 #include "maze.h"
 
-int Maze::linearize(int x, int y) { 
-  return (y * width_) + x;
-}
+namespace maze {
+
+int Maze::linearize(int x, int y) { return (y * width_) + x; }
 
 Maze::Maze(int width, int height) : width_{width}, height_{height} {
   maze_ = std::vector<Cell>{};
@@ -16,19 +16,12 @@ Maze::Maze(int width, int height) : width_{width}, height_{height} {
   }
 }
 
-int Maze::width() {
-  return width_;
-}
+int Maze::width() { return width_; }
 
-int Maze::height() {
-  return height_;
-}
+int Maze::height() { return height_; }
 
-int Maze::size() {
-  return maze_.size();
-}
+int Maze::size() { return maze_.size(); }
 
-Cell Maze::cell_at(int x, int y) {
-  return maze_.at(linearize(x, y));
-}
+Cell Maze::cell_at(int x, int y) { return maze_.at(linearize(x, y)); }
 
+} // namespace maze

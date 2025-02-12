@@ -5,22 +5,26 @@
 
 #include "cell.h"
 
+namespace maze {
+
 class Maze {
-  private:
-    const int width_;
-    const int height_;
-    std::vector<Cell> maze_;
+private:
+  const int width_;
+  const int height_;
+  std::vector<Cell> maze_;
 
-    int linearize(int x, int y);
+  int linearize(int x, int y);
 
-  public:
-    Maze(int width, int height);
-      
-    int width();
-    int height(); 
-    int size(); 
+public:
+  Maze(int width, int height);
 
-    Cell cell_at(int x, int y);
+  int width();
+  int height();
+  int size();
+
+  Cell cell_at(int x, int y);
 };
+
+} // namespace maze
 
 #endif // _MAZE_H_

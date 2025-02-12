@@ -3,16 +3,21 @@
 
 #include "coordinate.h"
 
-class Cell {
-  private:
-    const Coordinate coordinate_;
-  public:
-    Cell(Coordinate coordinate);
-    Cell(int x, int y);
+namespace maze {
 
-    Coordinate coordinate();
-    int x();
-    int y();
+class Cell {
+private:
+  const Coordinate coordinate_;
+
+public:
+  Cell(Coordinate coordinate);
+  Cell(int x, int y);
+
+  Coordinate coordinate();
+  int x();
+  int y();
 };
+
+} // namespace maze
 
 #endif // _CELL_H_
