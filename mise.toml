@@ -1,0 +1,9 @@
+[tools]
+clang-format = "19.1.7"
+clangd = "19.1.7"
+cmake = "3.31.5"
+clang = "19.1.7"
+
+[env]
+CPATH = "{{env.HOME}}/.local/share/mise/installs/clang/19.1.7/lib/clang/19/include"
+
