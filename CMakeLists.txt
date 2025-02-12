@@ -8,4 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 project(mazes-in-cpp VERSION 0.0.0 LANGUAGES CXX)
 
+add_library(maze cell.cpp maze.cpp)
+
 add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} maze)
