@@ -29,5 +29,13 @@ target_link_libraries(
   GTest::gtest_main
 )
 
+add_executable(maze-test maze-test.cpp)
+target_link_libraries(
+  maze-test
+  maze
+  GTest::gtest_main
+)
+
 include(GoogleTest)
 gtest_discover_tests(cell-test)
+gtest_discover_tests(maze-test)
