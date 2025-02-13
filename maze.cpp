@@ -1,6 +1,7 @@
 #include <vector>
 
 #include "cell.h"
+#include "coordinate.h"
 #include "maze.h"
 
 namespace maze {
@@ -11,7 +12,24 @@ Maze::Maze(int width, int height) : width_{width}, height_{height} {
   maze_ = std::vector<Cell>{};
   for (int y = 0; y < height_; ++y) {
     for (int x = 0; x < width_; ++x) {
-      maze_.push_back(Cell(x, y));
+      maze::Cell cell = Cell(x, y);
+      if (y < height - 1) {
+        maze::Coordinate north{x, y + 1};
+        cell.neighbors().north = north;
+      }
+      if (x < width - 1) {
+        maze::Coordinate east{x + 1, y};
+        cell.neighbors().east = east;
+      }
+      if (y > 0) {
+        maze::Coordinate south{x, y - 1};
+        cell.neighbors().south = south;
+      }
+      if (x > 0) {
+        maze::Coordinate west{x - 1, y};
+        cell.neighbors().west = west;
+      }
+      maze_.push_back(cell);
     }
   }
 }

@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "cell.h"
+#include "coordinate.h"
 #include "maze.h"
 
 TEST(MazeTest, HappyWidthHeight) {
@@ -16,6 +17,23 @@ TEST(MazeTest, HappyWidthHeight) {
       maze::Cell cell = maze.cell_at(x, y);
       EXPECT_EQ(cell.x(), x);
       EXPECT_EQ(cell.y(), y);
+
+      if (y < height - 1) {
+        maze::Coordinate north{x, y + 1};
+        EXPECT_EQ(cell.neighbors().north, north);
+      }
+      if (x < width - 1) {
+        maze::Coordinate east{x + 1, y};
+        EXPECT_EQ(cell.neighbors().east, east);
+      }
+      if (y > 0) {
+        maze::Coordinate south{x, y - 1};
+        EXPECT_EQ(cell.neighbors().south, south);
+      }
+      if (x > 0) {
+        maze::Coordinate west{x - 1, y};
+        EXPECT_EQ(cell.neighbors().west, west);
+      }
     }
   }
 }
