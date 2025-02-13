@@ -37,3 +37,23 @@ TEST(MazeTest, HappyWidthHeight) {
     }
   }
 }
+
+TEST(MazeTest, NeighborsCanLink) {
+  constexpr int width = 5;
+  constexpr int height = 6;
+  constexpr int x1 = 1;
+  constexpr int y1 = 1;
+  constexpr int x2 = 2;
+  constexpr int y2 = 1;
+  maze::Coordinate c1{x1, y1};
+  maze::Coordinate c2{x2, y2};
+  maze::Maze maze = maze::Maze(width, height);
+
+  EXPECT_FALSE(maze.cell_at(x1, y1).links().east);
+  EXPECT_FALSE(maze.cell_at(x2, y2).links().west);
+
+  maze.link(c1, c2);
+
+  EXPECT_EQ(*(maze.cell_at(x1, y1).links().east), c2);
+  EXPECT_EQ(*(maze.cell_at(x2, y2).links().west), c1);
+}

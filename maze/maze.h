@@ -23,6 +23,8 @@ public:
   int size();
 
   Cell cell_at(int x, int y);
+
+  void link(Coordinate c1, Coordinate c2);
 };
 
 } // namespace maze

@@ -42,4 +42,23 @@ int Maze::size() { return maze_.size(); }
 
 Cell Maze::cell_at(int x, int y) { return maze_.at(linearize(x, y)); }
 
+void Maze::link(Coordinate c1, Coordinate c2) {
+  int c1_index = linearize(c1.x, c1.y);
+  int c2_index = linearize(c2.x, c2.y);
+
+  if (*(maze_[c1_index].neighbors().east) == c2) {
+    maze_[c1_index].links().east = c2;
+    maze_[c2_index].links().west = c1;
+  } else if (*(maze_[c1_index].neighbors().north) == c2) {
+    maze_[c1_index].links().north = c2;
+    maze_[c2_index].links().south = c1;
+  } else if (*(maze_[c1_index].neighbors().south) == c2) {
+    maze_[c1_index].links().south = c2;
+    maze_[c2_index].links().north = c1;
+  } else if (*(maze_[c1_index].neighbors().west) == c2) {
+    maze_[c1_index].links().west = c2;
+    maze_[c2_index].links().east = c1;
+  }
+}
+
 } // namespace maze
