@@ -6,6 +6,8 @@ namespace maze {
 struct Coordinate {
   int x;
   int y;
+
+  bool operator==(Coordinate const& rhs) const;
 };
 
 } // namespace maze
