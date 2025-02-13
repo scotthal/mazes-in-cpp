@@ -17,8 +17,8 @@ public:
   Cell(int x, int y);
 
   Coordinate coordinate();
-  Neighbors& links();
-  Neighbors& neighbors();
+  Neighbors &links();
+  Neighbors &neighbors();
   int x();
   int y();
 };
