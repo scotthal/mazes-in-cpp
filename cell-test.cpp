@@ -1,3 +1,6 @@
+#include <algorithm>
+#include <vector>
+
 #include "gtest/gtest.h"
 
 #include "cell.h"
@@ -18,4 +21,36 @@ TEST(CellTest, Coordinate) {
   EXPECT_EQ(xy_cell.coordinate().y, y);
   EXPECT_EQ(xy_cell.x(), x);
   EXPECT_EQ(xy_cell.y(), y);
+}
+
+TEST(CellTest, Neighbors) {
+  constexpr int x = 2;
+  constexpr int y = 3;
+  maze::Cell cell = maze::Cell(x, y);
+
+  EXPECT_EQ(cell.neighbors().to_vector().size(), 0);
+
+  maze::Coordinate north{x, y + 1};
+
+  cell.neighbors().north = north;
+  auto coordinates = cell.neighbors().to_vector();
+  EXPECT_EQ(coordinates.size(), 1);
+  auto found = std::find(coordinates.begin(), coordinates.end(), north);
+  EXPECT_NE(found, coordinates.end());
+}
+
+TEST(CellTest, Links) {
+  constexpr int x = 2;
+  constexpr int y = 3;
+  maze::Cell cell = maze::Cell(x, y);
+
+  EXPECT_EQ(cell.links().to_vector().size(), 0);
+
+  maze::Coordinate north{x, y + 1};
+
+  cell.links().north = north;
+  auto coordinates = cell.links().to_vector();
+  EXPECT_EQ(coordinates.size(), 1);
+  auto found = std::find(coordinates.begin(), coordinates.end(), north);
+  EXPECT_NE(found, coordinates.end());
 }
