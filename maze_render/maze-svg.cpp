@@ -5,14 +5,21 @@
 
 namespace maze_render {
 
-void svg(maze::Maze &maze, std::ostream &output) {
-  output << "Maze size: " << maze.size() << "\n";
-  for (int y = 0; y < maze.height(); ++y) {
-    for (int x = 0; x < maze.width(); ++x) {
-      maze::Cell cell = maze.cell_at(x, y);
-      output << "(" << cell.x() << ", " << cell.y() << ")\n";
-    }
-  }
+static void svg_element_open(std::ostream &output, int width, int height) {
+  output << "<svg version=\"1.1\" ";
+  output << "width=\"" << width << "\" ";
+  output << "height=\"" << height << "\" ";
+  output << "xmlns=\"http://www.w3.org/2000/svg\">\n";
+}
+
+static void svg_element_close(std::ostream &output) { output << "</svg>\n"; }
+
+void svg(maze::Maze &maze, int cell_width, int cell_height,
+         std::ostream &output) {
+  const int maze_width = cell_width * maze.width();
+  const int maze_height = cell_height * maze.height();
+  svg_element_open(output, maze_width, maze_height);
+  svg_element_close(output);
 }
 
 } // namespace maze_render

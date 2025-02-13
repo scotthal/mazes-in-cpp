@@ -6,7 +6,8 @@
 #include "maze.h"
 
 namespace maze_render {
-void svg(maze::Maze &maze, std::ostream &output);
+void svg(maze::Maze &maze, int cell_width, int cell_height,
+         std::ostream &output);
 } // namespace maze_render
 
 #endif // _MAZE_SVG_H_
