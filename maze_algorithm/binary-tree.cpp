@@ -16,7 +16,7 @@ void binary_tree(maze::Maze &maze) {
     for (int x = 0; x < width; ++x) {
       auto cell = maze.cell_at(x, y);
       if (cell.neighbors().north && cell.neighbors().east) {
-        int flip = rand();
+        int flip = std::rand();
         if (flip > (RAND_MAX >> 1)) {
           maze.link(cell.coordinate(), *(cell.neighbors().north));
         } else {
