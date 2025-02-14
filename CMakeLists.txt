@@ -18,6 +18,7 @@ FetchContent_MakeAvailable(googletest)
 project(mazes-in-cpp VERSION 0.0.0 LANGUAGES CXX)
 
 add_subdirectory(maze)
+add_subdirectory(maze_algorithm)
 add_subdirectory(maze_render)
 
 add_executable(${PROJECT_NAME} main.cpp)
@@ -25,7 +26,8 @@ target_include_directories(
   ${PROJECT_NAME}
   PUBLIC
   "${PROJECT_SOURCE_DIR}/maze"
+  "${PROJECT_SOURCE_DIR}/maze_algorithm"
   "${PROJECT_SOURCE_DIR}/maze_render"
 )
-target_link_libraries(${PROJECT_NAME} maze maze_render)
+target_link_libraries(${PROJECT_NAME} maze maze_algorithm maze_render)
 
