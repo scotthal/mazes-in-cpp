@@ -7,7 +7,7 @@
 TEST(MazeTest, HappyWidthHeight) {
   constexpr int width = 3;
   constexpr int height = 5;
-  maze::Maze maze = maze::Maze(width, height);
+  auto maze = maze::Maze(width, height);
   EXPECT_EQ(maze.width(), width);
   EXPECT_EQ(maze.height(), height);
   EXPECT_EQ(maze.size(), width * height);
@@ -47,7 +47,7 @@ TEST(MazeTest, NeighborsCanLink) {
   constexpr int y2 = 1;
   maze::Coordinate c1{x1, y1};
   maze::Coordinate c2{x2, y2};
-  maze::Maze maze = maze::Maze(width, height);
+  auto maze = maze::Maze(width, height);
 
   EXPECT_FALSE(maze.cell_at(x1, y1).links().east);
   EXPECT_FALSE(maze.cell_at(x2, y2).links().west);
@@ -56,4 +56,21 @@ TEST(MazeTest, NeighborsCanLink) {
 
   EXPECT_EQ(*(maze.cell_at(x1, y1).links().east), c2);
   EXPECT_EQ(*(maze.cell_at(x2, y2).links().west), c1);
+}
+
+TEST(MazeTest, CellAt) {
+  constexpr int width = 5;
+  constexpr int height = 6;
+  constexpr int x = 4;
+  constexpr int y = 2;
+  maze::Coordinate c{x, y};
+  auto maze = maze::Maze(width, height);
+
+  auto cell1 = maze.cell_at(x, y);
+  ASSERT_EQ(cell1.x(), x);
+  ASSERT_EQ(cell1.y(), y);
+
+  auto cell2 = maze.cell_at(c);
+  ASSERT_EQ(cell2.x(), x);
+  ASSERT_EQ(cell2.y(), y);
 }

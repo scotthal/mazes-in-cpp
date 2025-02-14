@@ -12,9 +12,7 @@ namespace maze_algorithm {
 static void close_run(maze::Maze &maze, std::vector<maze::Coordinate> &run) {
   if (!run.empty()) {
     int chosen_coordinate = std::rand() % run.size();
-    int x = run[chosen_coordinate].x;
-    int y = run[chosen_coordinate].y;
-    maze::Cell cell = maze.cell_at(x, y);
+    maze::Cell cell = maze.cell_at(run[chosen_coordinate]);
     if (cell.neighbors().north) {
       maze.link(cell.coordinate(), *(cell.neighbors().north));
     }

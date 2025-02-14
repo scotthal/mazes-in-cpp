@@ -40,6 +40,7 @@ int Maze::height() { return height_; }
 
 int Maze::size() { return maze_.size(); }
 
+Cell Maze::cell_at(Coordinate c) { return maze_.at(linearize(c.x, c.y)); }
 Cell Maze::cell_at(int x, int y) { return maze_.at(linearize(x, y)); }
 
 void Maze::link(Coordinate c1, Coordinate c2) {

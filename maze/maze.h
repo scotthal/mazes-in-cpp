@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "cell.h"
+#include "coordinate.h"
 
 namespace maze {
 
@@ -22,6 +23,7 @@ public:
   int height();
   int size();
 
+  Cell cell_at(Coordinate c);
   Cell cell_at(int x, int y);
 
   void link(Coordinate c1, Coordinate c2);
