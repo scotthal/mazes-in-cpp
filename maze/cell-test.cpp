@@ -54,3 +54,18 @@ TEST(CellTest, Links) {
   auto found = std::find(coordinates.begin(), coordinates.end(), north);
   EXPECT_NE(found, coordinates.end());
 }
+
+TEST(CellTest, Distances) {
+  constexpr int x = 42;
+  constexpr int y = 24;
+  maze::Cell cell = maze::Cell(x, y);
+
+  EXPECT_FALSE(cell.distances());
+
+  cell.distances({1, 2, 3, 4});
+  EXPECT_EQ(cell.distances().value().size(), 4);
+  EXPECT_EQ(cell.distances().value().at(0), 1);
+  EXPECT_EQ(cell.distances().value().at(1), 2);
+  EXPECT_EQ(cell.distances().value().at(2), 3);
+  EXPECT_EQ(cell.distances().value().at(3), 4);
+}
