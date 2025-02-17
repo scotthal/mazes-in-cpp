@@ -1,5 +1,7 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "cell.h"
 #include "maze-svg.h"
@@ -33,6 +35,17 @@ static void line(std::ostream &output, const std::string &stroke,
   output << "/>\n";
 }
 
+static void rect(std::ostream &output, const std::string &fill, int x, int y,
+                 int width, int height) {
+  output << "<rect ";
+  output << "fill=\"" << fill << "\" ";
+  output << "x=\"" << x << "\" ";
+  output << "y=\"" << y << "\" ";
+  output << "width=\"" << width << "\" ";
+  output << "height=\"" << height << "\" ";
+  output << "/>\n";
+}
+
 static void render_cell(std::ostream &output, maze::Cell &&cell, int cell_width,
                         int cell_height, const std::string &stroke,
                         int stroke_width) {
@@ -59,6 +72,19 @@ static void render_cell(std::ostream &output, maze::Cell &&cell, int cell_width,
 
 static void svg_element_close(std::ostream &output) { output << "</svg>\n"; }
 
+static void render_cell_walls(maze::Maze &maze, int cell_width, int cell_height,
+                              const std::string &stroke, int stroke_width,
+                              std::ostream &output) {
+  const int maze_width_cells = maze.width();
+  const int maze_height_cells = maze.height();
+  for (int y = 0; y < maze_height_cells; ++y) {
+    for (int x = 0; x < maze_width_cells; ++x) {
+      render_cell(output, maze.cell_at(x, y), cell_width, cell_height, stroke,
+                  stroke_width);
+    }
+  }
+}
+
 void svg(maze::Maze &maze, int cell_width, int cell_height,
          std::ostream &output) {
   const int maze_width_cells = maze.width();
@@ -67,13 +93,44 @@ void svg(maze::Maze &maze, int cell_width, int cell_height,
   const int maze_height = maze_height_cells * cell_height;
   svg_element_open(output, maze_width, maze_height);
   background(output, "white");
-  for (int y = 0; y < maze_height_cells; ++y) {
-    for (int x = 0; x < maze_width_cells; ++x) {
-      render_cell(output, maze.cell_at(x, y), cell_width, cell_height, "black",
-                  1);
-    }
-  }
+  render_cell_walls(maze, cell_width, cell_height, "black", 1, output);
   svg_element_close(output);
 }
 
+void svg_distance(maze::Maze &maze, int cell_width, int cell_height,
+                  std::ostream &output) {
+  const int maze_width_cells = maze.width();
+  const int maze_height_cells = maze.height();
+  const int maze_width = maze_width_cells * cell_width;
+  const int maze_height = maze_height_cells * cell_height;
+  const int root_x = maze_width_cells / 2;
+  const int root_y = maze_height_cells / 2;
+  if (!maze.cell_at(root_x, root_y).distances()) {
+    maze.calculate_distances(root_x, root_y);
+  }
+  auto distances = maze.cell_at(root_x, root_y).distances().value();
+  double max_distance = static_cast<double>(
+      *std::max_element(distances.begin(), distances.end()));
+
+  svg_element_open(output, maze_width, maze_height);
+  background(output, "white");
+  int overall_index = 0;
+  for (int y = 0; y < maze_height_cells; ++y) {
+    for (int x = 0; x < maze_width_cells; ++x) {
+      double distance = static_cast<double>(distances[overall_index]);
+      double intensity = (max_distance - distance) / max_distance;
+      int dark = static_cast<int>(255 * intensity);
+      int bright = static_cast<int>(128 + (127 * intensity));
+      std::string fill = "rgb(" + std::to_string(dark) + " " +
+                         std::to_string(bright) + " " + std::to_string(dark) +
+                         ")";
+      rect(output, fill, x * cell_width, y * cell_height, cell_width,
+           cell_height);
+      render_cell(output, maze.cell_at(x, y), cell_width, cell_height, "black",
+                  1);
+      ++overall_index;
+    }
+  }
+  render_cell_walls(maze, cell_width, cell_height, "black", 1, output);
+}
 } // namespace maze_render

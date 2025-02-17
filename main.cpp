@@ -11,6 +11,6 @@ int main() {
   constexpr int cell_height = 20;
   maze::Maze maze = maze::Maze(width, height);
   maze_algorithm::sidewinder(maze);
-  maze_render::svg(maze, cell_width, cell_height, std::cout);
+  maze_render::svg_distance(maze, cell_width, cell_height, std::cout);
   return 0;
 }
