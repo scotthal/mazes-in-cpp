@@ -44,6 +44,7 @@ int Maze::size() { return maze_.size(); }
 
 Cell Maze::cell_at(Coordinate c) { return maze_.at(linearize(c.x, c.y)); }
 Cell Maze::cell_at(int x, int y) { return maze_.at(linearize(x, y)); }
+Cell Maze::cell_at(int linear_index) { return maze_.at(linear_index); }
 
 void Maze::link(Coordinate c1, Coordinate c2) {
   int c1_index = linearize(c1.x, c1.y);

@@ -26,6 +26,7 @@ public:
 
   Cell cell_at(Coordinate c);
   Cell cell_at(int x, int y);
+  Cell cell_at(int linear_index);
 
   void link(Coordinate c1, Coordinate c2);
 
