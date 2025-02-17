@@ -14,6 +14,7 @@ private:
   const int height_;
   std::vector<Cell> maze_;
 
+  int linearize(Coordinate c);
   int linearize(int x, int y);
 
 public:

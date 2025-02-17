@@ -6,6 +6,7 @@
 
 namespace maze {
 
+int Maze::linearize(Coordinate c) { return (c.y * width_) + c.x; }
 int Maze::linearize(int x, int y) { return (y * width_) + x; }
 
 Maze::Maze(int width, int height) : width_{width}, height_{height} {
