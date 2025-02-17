@@ -67,10 +67,10 @@ TEST(MazeTest, CellAt) {
   auto maze = maze::Maze(width, height);
 
   auto cell1 = maze.cell_at(x, y);
-  ASSERT_EQ(cell1.x(), x);
-  ASSERT_EQ(cell1.y(), y);
+  EXPECT_EQ(cell1.x(), x);
+  EXPECT_EQ(cell1.y(), y);
 
   auto cell2 = maze.cell_at(c);
-  ASSERT_EQ(cell2.x(), x);
-  ASSERT_EQ(cell2.y(), y);
+  EXPECT_EQ(cell2.x(), x);
+  EXPECT_EQ(cell2.y(), y);
 }
