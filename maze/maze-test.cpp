@@ -74,3 +74,35 @@ TEST(MazeTest, CellAt) {
   EXPECT_EQ(cell2.x(), x);
   EXPECT_EQ(cell2.y(), y);
 }
+
+TEST(MazeTest, CalculateDistancesGetsBasicDistancesRight) {
+  constexpr int width = 3;
+  constexpr int height = 3;
+  constexpr int root_x = 0;
+  constexpr int root_y = 0;
+  constexpr maze::Coordinate root{root_x, root_y};
+  auto maze = maze::Maze(width, height);
+
+  for (int y = 0; y < width; ++y) {
+    for (int x = 0; x < width; ++x) {
+      auto neighbors = maze.cell_at(x, y).neighbors().to_vector();
+      for (auto neighbor : neighbors) {
+        maze.link(maze::Coordinate(x, y), neighbor);
+      }
+    }
+  }
+
+  maze.calculate_distances(root);
+
+  auto distances = maze.cell_at(root).distances().value();
+
+  EXPECT_EQ(distances[0], 0);
+  EXPECT_EQ(distances[1], 1);
+  EXPECT_EQ(distances[2], 2);
+  EXPECT_EQ(distances[3], 1);
+  EXPECT_EQ(distances[4], 2);
+  EXPECT_EQ(distances[5], 3);
+  EXPECT_EQ(distances[6], 2);
+  EXPECT_EQ(distances[7], 3);
+  EXPECT_EQ(distances[8], 4);
+}

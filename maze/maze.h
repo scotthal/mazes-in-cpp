@@ -28,6 +28,9 @@ public:
   Cell cell_at(int x, int y);
 
   void link(Coordinate c1, Coordinate c2);
+
+  void calculate_distances(Coordinate root);
+  void calculate_distances(int root_x, int root_y);
 };
 
 } // namespace maze

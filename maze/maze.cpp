@@ -1,3 +1,4 @@
+#include <queue>
 #include <vector>
 
 #include "cell.h"
@@ -63,4 +64,34 @@ void Maze::link(Coordinate c1, Coordinate c2) {
   }
 }
 
+void Maze::calculate_distances(Coordinate root) {
+  calculate_distances(root.x, root.y);
+}
+
+void Maze::calculate_distances(int root_x, int root_y) {
+  constexpr int kNoDistance = -1;
+  std::queue<Coordinate> frontier; 
+  frontier.push(Coordinate(root_x, root_y));
+  std::vector<int> distances = std::vector<int>(maze_.size(), kNoDistance);
+  int root_index = linearize(root_x, root_y);
+  distances[root_index] = 0;
+
+  while (!frontier.empty()) {
+    auto current_coordinate = frontier.front();
+    frontier.pop();
+    int current_index = linearize(current_coordinate);
+    int current_distance = distances[current_index];
+    int link_distance = current_distance + 1;
+    auto current_links = cell_at(current_coordinate).links().to_vector();
+    for (auto current_link : current_links) {
+      int link_index = linearize(current_link);
+      if (distances[link_index] == kNoDistance) {
+        distances[link_index] = link_distance;
+        frontier.push(current_link);
+      }
+    }
+  }
+
+  maze_[root_index].distances(distances);
+}
 } // namespace maze
