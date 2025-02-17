@@ -70,7 +70,7 @@ void Maze::calculate_distances(Coordinate root) {
 
 void Maze::calculate_distances(int root_x, int root_y) {
   constexpr int kNoDistance = -1;
-  std::queue<Coordinate> frontier; 
+  std::queue<Coordinate> frontier;
   frontier.push(Coordinate(root_x, root_y));
   std::vector<int> distances = std::vector<int>(maze_.size(), kNoDistance);
   int root_index = linearize(root_x, root_y);
@@ -93,5 +93,39 @@ void Maze::calculate_distances(int root_x, int root_y) {
   }
 
   maze_[root_index].distances(distances);
+}
+
+std::vector<Coordinate> Maze::path(Coordinate c1, Coordinate c2) {
+  return path(c1.x, c1.y, c2.x, c2.y);
+}
+
+std::vector<Coordinate> Maze::path(int x1, int y1, int x2, int y2) {
+  const int index1 = linearize(x1, y1);
+  const int index2 = linearize(x2, y2);
+  int current_index = index2;
+  std::vector<Coordinate> path{};
+
+  if (!maze_[index1].distances()) {
+    calculate_distances(x1, y1);
+  }
+
+  auto distances = *maze_[index1].distances();
+  path.push_back(Coordinate(x2, y2));
+  int next_distance = distances[index2] - 1;
+
+  while (next_distance >= 0) {
+    auto current_links = maze_[current_index].links().to_vector();
+    for (auto current_link : current_links) {
+      int current_link_index = linearize(current_link);
+      if (distances[current_link_index] == next_distance) {
+        path.push_back(current_link);
+        --next_distance;
+        current_index = current_link_index;
+        break;
+      }
+    }
+  }
+
+  return path;
 }
 } // namespace maze

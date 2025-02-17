@@ -106,3 +106,24 @@ TEST(MazeTest, CalculateDistancesGetsBasicDistancesRight) {
   EXPECT_EQ(distances[7], 3);
   EXPECT_EQ(distances[8], 4);
 }
+
+TEST(MazeTest, PathCanFindASimplePath) {
+  constexpr int width = 2;
+  constexpr int height = 2;
+  constexpr int origin_x = 0;
+  constexpr int origin_y = 0;
+  constexpr int destination_x = 0;
+  constexpr int destination_y = 0;
+  auto maze = maze::Maze(width, height);
+
+  maze.link(maze::Coordinate(0, 0), maze::Coordinate(0, 1));
+  maze.link(maze::Coordinate(0, 1), maze::Coordinate(1, 1));
+  maze.link(maze::Coordinate(1, 1), maze::Coordinate(1, 0));
+
+  auto path = maze.path(maze::Coordinate(0, 0), maze::Coordinate(1, 0));
+  EXPECT_EQ(path.size(), 4);
+  EXPECT_EQ(path[0], maze::Coordinate(1, 0));
+  EXPECT_EQ(path[1], maze::Coordinate(1, 1));
+  EXPECT_EQ(path[2], maze::Coordinate(0, 1));
+  EXPECT_EQ(path[3], maze::Coordinate(0, 0));
+}

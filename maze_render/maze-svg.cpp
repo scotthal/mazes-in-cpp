@@ -131,6 +131,6 @@ void svg_distance(maze::Maze &maze, int cell_width, int cell_height,
       ++overall_index;
     }
   }
-  render_cell_walls(maze, cell_width, cell_height, "black", 1, output);
+  svg_element_close(output);
 }
 } // namespace maze_render
