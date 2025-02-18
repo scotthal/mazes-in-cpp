@@ -7,6 +7,6 @@ namespace maze_algorithm {
 
 void sidewinder(maze::Maze &maze);
 
-}
+} // namespace maze_algorithm
 
 #endif // _SIDEWINDER_H_
