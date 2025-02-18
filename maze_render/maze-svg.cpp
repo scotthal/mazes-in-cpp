@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -103,6 +102,7 @@ static void render_maze_path(std::ostream &output, int cell_width,
     const int x2 = (coordinate.x * cell_width) + cell_half_width;
     const int y2 = (coordinate.y * cell_height) + cell_half_height;
     line(output, stroke, stroke_width, x1, y1, x2, y2);
+    previous_coordinate = coordinate;
   }
 }
 
@@ -130,8 +130,33 @@ void svg_distance(maze::Maze &maze, int cell_width, int cell_height,
     maze.calculate_distances(root_x, root_y);
   }
   auto distances = maze.cell_at(root_x, root_y).distances().value();
-  int max_distance = *std::max_element(distances.begin(), distances.end());
-  double max_distance_double = static_cast<double>(max_distance);
+  int max_distance1 = -1;
+  int max_distance1_index = -1;
+  for (int i = 0; i < distances.size(); ++i) {
+    if (distances[i] > max_distance1) {
+      max_distance1 = distances[i];
+      max_distance1_index = i;
+    }
+  }
+  auto max_coordinate1 = maze.cell_at(max_distance1_index).coordinate();
+
+  double max_distance1_double = static_cast<double>(max_distance1);
+
+  if (!maze.cell_at(max_coordinate1).distances()) {
+    maze.calculate_distances((max_coordinate1));
+  }
+  auto distances2 = maze.cell_at(max_coordinate1).distances().value();
+  int max_distance = -1;
+  int max_distance_index = -1;
+  for (int i = 0; i < distances2.size(); ++i) {
+    if (distances2[i] > max_distance) {
+      max_distance = distances2[i];
+      max_distance_index = i;
+    }
+  }
+  auto max_coordinate2 = maze.cell_at(max_distance_index).coordinate();
+
+  auto max_path = maze.path(max_coordinate1, max_coordinate2);
 
   svg_element_open(output, maze_width, maze_height);
   background(output, "white");
@@ -139,7 +164,7 @@ void svg_distance(maze::Maze &maze, int cell_width, int cell_height,
   for (int y = 0; y < maze_height_cells; ++y) {
     for (int x = 0; x < maze_width_cells; ++x) {
       double distance = static_cast<double>(distances[overall_index]);
-      double intensity = (max_distance - distance) / max_distance_double;
+      double intensity = (max_distance1 - distance) / max_distance1_double;
       int dark = static_cast<int>(255 * intensity);
       int bright = static_cast<int>(128 + (127 * intensity));
       std::string fill = "rgb(" + std::to_string(dark) + " " +
@@ -151,7 +176,8 @@ void svg_distance(maze::Maze &maze, int cell_width, int cell_height,
                   1);
       ++overall_index;
     }
-    svg_element_close(output);
+    render_maze_path(output, cell_width, cell_height, "red", 3, max_path);
   }
+  svg_element_close(output);
 }
 } // namespace maze_render
