@@ -14,15 +14,15 @@ private:
   const int height_;
   std::vector<Cell> maze_;
 
-  int linearize(Coordinate c);
-  int linearize(int x, int y);
-
 public:
   Maze(int width, int height);
 
   int width();
   int height();
   int size();
+
+  int linearize(Coordinate c);
+  int linearize(int x, int y);
 
   Cell cell_at(Coordinate c);
   Cell cell_at(int x, int y);

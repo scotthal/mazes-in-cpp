@@ -38,6 +38,27 @@ TEST(MazeTest, HappyWidthHeight) {
   }
 }
 
+TEST(MazeTest, BasicLinearizeCasesWork) {
+  constexpr int width = 3;
+  constexpr int height = 5;
+  auto maze = maze::Maze(width, height);
+
+  EXPECT_EQ(maze.linearize(0, 0), 0);
+  auto coordinate = maze::Coordinate(0, 0);
+  EXPECT_EQ(maze.linearize(coordinate), 0);
+  EXPECT_EQ(maze.linearize(2, 0), 2);
+  coordinate = maze::Coordinate(2, 0);
+  EXPECT_EQ(maze.linearize(0, 1), 3);
+  coordinate = maze::Coordinate(0, 1);
+  EXPECT_EQ(maze.linearize(coordinate), 3);
+  EXPECT_EQ(maze.linearize(0, 4), 12);
+  coordinate = maze::Coordinate(0, 4);
+  EXPECT_EQ(maze.linearize(coordinate), 12);
+  EXPECT_EQ(maze.linearize(2, 4), 14);
+  coordinate = maze::Coordinate(2, 4);
+  EXPECT_EQ(maze.linearize(coordinate), 14);
+}
+
 TEST(MazeTest, NeighborsCanLink) {
   constexpr int width = 5;
   constexpr int height = 6;
